@@ -23,3 +23,22 @@ void dfs (int arr[10][10], vector<int> visited, int start)
         }
 
 }
+
+void bfs (int arr[10][10], vector<int> visited, int start)
+{
+    queue<int> q;
+    q.push(start);
+    while(!q.empty()){
+        int current = q.front();
+        q.pop();
+        if(isExisting(visited, current)) continue;
+        visited.push_back(current);
+        cout<<current<<" ";
+        for(int i=0;i<10;i++)
+        {
+            if(arr[current][i] && !isExisting(visited,i)) {}
+            q.push(i);
+        }
+
+    }
+}
