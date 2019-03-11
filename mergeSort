@@ -85,3 +85,21 @@ void mergeSort(Box<T>*& myList)
 
     myList = sort(firstHalf, secondHalf);
 }
+
+template<typename T>
+void pushFront (const T& data, Box<T>*& curr)
+{
+    Box<T>* temp = new Box<T> (data, nullptr);
+    temp->next = curr;
+    curr = temp;
+}
+
+template<typename T>
+void printList(Box<T>* list)
+{
+    while(list != nullptr)
+    {
+        cout<<list->data<<" ";
+        list = list->next;
+    }
+}
