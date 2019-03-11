@@ -1,0 +1,41 @@
+#include <iostream>
+#include <stack>
+
+using namespace std;
+template<typename T>
+struct BNode
+{
+    T data;
+    BNode<T> *left, *right;
+    BNode(const T& d, BNode<T>* l = nullptr, BNode<T>* r = nullptr) : data(d), left(l), right(r) {}
+};
+
+template<typename T = int>
+BNode<T>* makeBST (int *arr, int n)
+{
+    BNode<T>* root = new BNode<T> (arr[n - 1]);
+    stack<BNode<T>*> nodes;
+    nodes.push(root);
+
+    for(size_t i = n - 2; i >= 0; i--)
+    {
+        BNode<T>* curr = new BNode<T>(i);
+        BNode<T>* temp;
+        while(nodes.empty() || curr->data > nodes.top()->data)
+        {
+            temp = nodes.top();
+            nodes.pop();
+        }
+        if(temp == nullptr) nodes.top()->right = curr;
+        else temp->left = curr;
+
+        nodes.push(curr);
+    }
+
+    return root;
+}
+int main()
+{
+    cout << "Hello world!" << endl;
+    return 0;
+}
