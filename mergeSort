@@ -1,0 +1,87 @@
+#include <iostream>
+#include <vector>
+#include <cassert>
+#include <cstring>
+
+using namespace std;
+
+//Task1
+template <typename T>
+struct Box
+{
+    T data;
+    Box<T> *next;
+
+    Box(T _data, Box<T> *_next)
+    {
+        this->data = _data;
+        this->next = _next;
+    }
+};
+
+template <typename T>
+void inHalf (Box<T>* originalList, Box<T>*& head, Box<T>*& tail)
+{
+    Box<T>* first;
+    Box<T>* last;
+
+    last = originalList->next;
+    first = originalList;
+
+    while (last != nullptr)
+    {
+        last = last->next;
+        if (last != nullptr)
+        {
+            first = first->next;
+            last = last->next;
+        }
+    }
+
+    head = originalList;
+    tail = first->next;
+    first->next = nullptr;
+}
+
+template <typename T>
+Box<T>* sort (Box<T>* firstList, Box<T>* secondList)
+{
+    Box<T>* sortedList = nullptr;
+
+    if (firstList == nullptr) return secondList;
+    else if (secondList == nullptr) return firstList;
+
+    if (firstList->data <= secondList->data)
+    {
+        sortedList = firstList;
+        sortedList->next = sort(firstList->next, secondList);
+    }
+    else
+    {
+        sortedList = secondList;
+        sortedList->next = sort(firstList, secondList->next);
+    }
+
+    return(sortedList);
+}
+
+template <typename T>
+void mergeSort(Box<T>*& myList)
+{
+    Box<T>* start = myList;
+    Box<T>* firstHalf;
+    Box<T>* secondHalf;
+
+
+    if ((start == nullptr) || (start->next == nullptr))
+    {
+        return;
+    }
+
+    inHalf(start, firstHalf, secondHalf);
+
+    mergeSort(firstHalf);
+    mergeSort(secondHalf);
+
+    myList = sort(firstHalf, secondHalf);
+}
