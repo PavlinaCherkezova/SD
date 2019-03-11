@@ -1,0 +1,32 @@
+#include <iostream>
+#include <cmath>
+
+using namespace std;
+
+template<typename T>
+struct BNode
+{
+    T data;
+    BNode<T> *left, *right;
+    BNode(const T& d, BNode<T>* l, BNode<T>* r) : data(d), left(l), right(r) {}
+};
+
+template<typename T>
+size_t getHeight (BNode<T>* root)
+{
+    if(root == nullptr) return 0;
+    else return 1 + max(getHeight(root->left), getHeight(root->right));
+}
+
+template<typename T>
+bool isBalanced (BNode<T>* root)
+{
+    if(root == nullptr) return true;
+    int heightDifference = getHeight(root->left) - getHeight(root->right);
+    if(abs(heightDifference) <= 1)
+    {
+         return isBalanced(root->left) && isBalanced(root->right);
+    }
+    else return false;
+}
+
