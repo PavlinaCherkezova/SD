@@ -1,0 +1,78 @@
+#include <iostream>
+
+using namespace std;
+
+template <typename T>
+struct Node
+{
+    T data;
+    Node<T> *next;
+
+    Node (T _data, Node<T> *_next) : data(_data), next(_next) {}
+};
+template <typename T>
+class Queue
+{
+private:
+    Node<T> *first;
+    Node<T> *last;
+    size_t size;
+
+public:
+    Queue()
+    {
+        this->first = NULL;
+        this->last = NULL;
+        this->size = 0;
+    }
+    Queue(Node<T> *first, Node<T> *last, size_t size)
+    {
+        this->first = first;
+        this->last = last;
+        this->size = size;
+    }
+    ~Queue ()
+    {
+        while(this-> last != NULL) // this->size = 0
+        {
+            Node<T> *curr = this->first;
+            this->first = this->first.next;
+            delete curr;
+            this->size --;
+        }
+    }
+    void push (const T& element)
+    {
+        Node<T> *newEl = new Node<T> (element, NULL);
+        if(this->last == NULL)
+        {
+            this->first = newEl;
+            this->last = first;
+        }
+        else
+        {
+            this->last->next = newEl;
+            this->last = this->last->next;
+        }
+        this->size++;
+    }
+    void pop ()
+    {
+        if(this->first.next == NULL )
+        {
+            delete this->first;
+            this->first = NULL;
+        }
+        else
+         {
+            Node<T> *tmp;
+            tmp = this->first;
+            this->first = this->first.next;
+            delete tmp;
+         }
+        this->size--;
+    }
+
+};
+
+
