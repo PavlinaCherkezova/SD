@@ -1,0 +1,83 @@
+#include <iostream>
+#include <string>
+#include <queue>
+#include <stack>
+#include <list>
+#include <fstream>
+#include <vector>
+
+using namespace std;
+
+class Point
+{
+private:
+    int x;
+    int y;
+    vector<char> name;
+    int sizeName = 0;
+public:
+    void save(ofstream& writer)
+    {
+        writer.write((char*) &x, sizeof(x));
+        writer.write((char*) &y, sizeof(y));
+        writer.write((char*) &sizeName, sizeof(sizeName));
+        writer.write(name.data(), name.size());
+    }
+    void read(ifstream& reader)
+    {
+        reader.read((char*)& x, sizeof(x));
+        //x = (int) buffer;
+
+        reader.read((char*)& y, sizeof(y));
+        //y = (int) buffer;
+        this->sizeName = 0;
+        reader.read((char*)& this->sizeName, sizeof(this->sizeName));
+
+        char* buffer = new char [this->sizeName + 1];
+        reader.read (buffer, (sizeof(char) * this->sizeName));
+        buffer[this->sizeName + 1] = '/0';
+        this->name.clear();
+        this->name(buffer);
+
+    }
+};
+class Serializer
+{
+private:
+    queue<Point> q;
+    stack<Point> s;
+    list<Point> l;
+public:
+    void save()
+    {
+         ofstream writer ("file.txt", ios::binary);
+         if(!writer.is_open())
+         {
+             cout<<"Error";
+         }
+        while(!q.empty())
+        {
+            q.front().save(writer);
+            q.pop();
+        }
+        writer.close();
+    }
+    void readQ ()
+    {
+        Point temp;
+        ifstream reader ("file.txt", ios::binary);
+        if(!reader.is_open())
+        {
+            cout<<"Error";
+        }
+        while(is_empty("file.txt"))
+        {
+            q.push(temp.read(reader));
+        }
+    }
+};
+int main()
+{
+    cout << "Hello world!" << endl;
+    return 0;
+}
