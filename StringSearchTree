@@ -1,0 +1,74 @@
+#include <iostream>
+#include <vector>
+#include <cassert>
+#include <cstring>
+
+using namespace std;
+struct TreeNode
+{
+    char letter;
+    vector<TreeNode*> children;
+    TreeNode(const char _letter = '1') : letter(_letter) {}
+};
+bool isWordInTree (TreeNode*& root, const char* word)
+{
+    if(word[0] == '\0') return true;
+    else if(root->children.empty() && word[0] != '\0') return false;
+    else
+    {
+        for(size_t i = 0; i < root->children.size(); i++)
+        {
+            if(root->children[i]->letter == word[0]) return isWordInTree(root->children[i], word + 1);
+        }
+        return false;
+    }
+}
+bool isLeaf (TreeNode* crr)
+{
+    assert(crr != nullptr);
+    if(crr->children.empty()) return true;
+    else return false;
+}
+void wordsInTreeHelper (TreeNode* root, size_t& counter)
+{
+    assert(root != nullptr);
+    for(size_t i = 0; i < root->children.size(); i++)
+    {
+        if(isLeaf(root->children[i])) counter ++;
+        else wordsInTreeHelper(root->children[i], counter);
+    }
+}
+size_t wordsInTree (TreeNode* root)
+{
+    assert(root != nullptr);
+
+    size_t counter = 0;
+    wordsInTreeHelper(root,counter);
+
+    return counter;
+}
+
+int main()
+{
+    TreeNode *t1 = new TreeNode;
+    t1->children.push_back(new TreeNode('h'));
+    t1->children.push_back(new TreeNode('p'));
+    t1->children[0]->children.push_back(new TreeNode('e'));
+    t1->children[0]->children.push_back(new TreeNode('a'));
+
+    t1->children[0]->children[0]->children.push_back(new TreeNode('l'));
+    t1->children[0]->children[0]->children[0]->children.push_back(new TreeNode('l'));
+    t1->children[0]->children[0]->children[0]->children[0]->children.push_back(new TreeNode('o'));
+
+    t1->children[0]->children[0]->children.push_back(new TreeNode('x'));//hex
+    t1->children[0]->children[1]->children.push_back(new TreeNode('m'));//ham
+
+    t1->children[1]->children.push_back(new TreeNode('e'));
+    t1->children[1]->children[0]->children.push_back(new TreeNode('t'));
+    t1->children[1]->children[0]->children[0]->children.push_back(new TreeNode('e'));
+    t1->children[1]->children[0]->children[0]->children[0]->children.push_back(new TreeNode('r'));//peter
+
+    t1->children[0]->children[0]->children.push_back(new TreeNode('r'));
+    t1->children[0]->children[0]->children[2]->children.push_back(new TreeNode('e'));//here
+    return 0;
+}
